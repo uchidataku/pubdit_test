@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_08_161937) do
+ActiveRecord::Schema.define(version: 2022_06_08_165734) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -67,7 +67,9 @@ ActiveRecord::Schema.define(version: 2022_06_08_161937) do
     t.uuid "organization_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "primary_organization_id"
     t.index ["organization_id"], name: "index_organizations_on_organization_id"
+    t.index ["primary_organization_id"], name: "index_organizations_on_primary_organization_id"
   end
 
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -129,6 +131,7 @@ ActiveRecord::Schema.define(version: 2022_06_08_161937) do
   add_foreign_key "messages", "accounts"
   add_foreign_key "messages", "rooms"
   add_foreign_key "organizations", "organizations"
+  add_foreign_key "organizations", "organizations", column: "primary_organization_id"
   add_foreign_key "recruitments", "organizations"
   add_foreign_key "role_permissions", "permissions"
   add_foreign_key "role_permissions", "roles"
